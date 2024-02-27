@@ -2,7 +2,7 @@
 
 options(warn=-1)
 
-library(optparse)
+suppressPackageStartupMessages(library(optparse))
 
 option_list = list(
   make_option(c("-i", "--input"), action="store", default=NA, type='character',
@@ -28,11 +28,7 @@ end <- as.integer(as.numeric(opt$e))
 data <- read.csv(input_file, sep="\t", header=FALSE)
 colnames(data) <- c('Chrom', 'Start', 'End', 'Coverage')
 
-chrom_length <- read.csv('ChromInfo.txt', sep="\t", header=FALSE)
-colnames(chrom_length) <- c('Chrom', 'Length')
-
-
-library(karyoploteR)
+suppressPackageStartupMessages(library(karyoploteR))
 custom.genome <- toGRanges(data.frame(chr=data$Chrom, start=data$Start, end=data$End, 
                                       name=data$Coverage))
 
@@ -49,5 +45,3 @@ if (is.na(chr_name)) {
 kpBars(kp, data=custom.genome, y1=custom.genome$name, ymax=max(custom.genome$name)/4, 
        col="#003399", border="#003399")
 dev.off()
-
-
